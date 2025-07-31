@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="in">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Judul halaman</title>
+    <style>
+       button {
+           width: 190px;
+           height: 50px;
+           background-color: red;
+           color: white;
+           font-size: 20px;
+       }
+       h1 {
+           font-size: 80px;
+           
+       }
+       #yak {
+           display: none;
+       }
+    </style>
+</head>
+<body>
+    <center>
+        <button id="okk" onclick="ya()">Tap Here</button>
+        <h1 id="yak">KONTOL 🥵</h1>
+    </center>
+    <script>
+        let i = 0;
+        const color = ["blue","yellow","grey","black","green","purple","red"];       
+      let interv = setInterval(() => {
+      if (i > 7) { i = 0; /* clearInterval(interv) */ }
+           let acak = Math.floor(Math.random() * 7);
+           document.getElementById("okk").style.backgroundColor = color[acak];
+           i++           
+        }, 350);
+        function ya() {
+           clearInterval(interv); document.getElementById("okk").remove();
+           document.getElementById("yak"). style.display = "flex";
+        }
+    </script>
+</body>
+</html>
