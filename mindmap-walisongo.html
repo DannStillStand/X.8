@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<title>Mind Mapping Wali Songo - A3</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  @page {
+    size: A3 landscape;
+    margin: 0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: #e8eef2;
+    font-family: 'Poppins', sans-serif;
+    color: #1f2937;
+  }
+
+  /* A3 landscape: 420mm x 297mm */
+  .page {
+    width: 420mm;
+    height: 297mm;
+    margin: 10mm auto;
+    background:
+      radial-gradient(circle at 20% 20%, #fff8ec 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, #eaf6ee 0%, transparent 40%),
+      linear-gradient(135deg, #fdfcf7 0%, #f6f1e3 100%);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    border: 2px solid #c9a14a;
+  }
+
+  /* Ornamental border */
+  .page::before {
+    content: "";
+    position: absolute;
+    inset: 6mm;
+    border: 1.2px solid #c9a14a;
+    border-radius: 6mm;
+    pointer-events: none;
+  }
+  .page::after {
+    content: "";
+    position: absolute;
+    inset: 8mm;
+    border: 0.4px solid #c9a14a80;
+    border-radius: 5mm;
+    pointer-events: none;
+  }
+
+  /* Decorative corner motifs */
+  .corner {
+    position: absolute;
+    width: 30mm; height: 30mm;
+    background: radial-gradient(circle, #c9a14a22, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .corner.tl { top: -10mm; left: -10mm; }
+  .corner.tr { top: -10mm; right: -10mm; }
+  .corner.bl { bottom: -10mm; left: -10mm; }
+  .corner.br { bottom: -10mm; right: -10mm; }
+
+  /* Header */
+  .header {
+    position: absolute;
+    top: 12mm;
+    left: 0; right: 0;
+    text-align: center;
+    z-index: 5;
+  }
+  .header .small {
+    font-size: 10pt;
+    letter-spacing: 6px;
+    color: #8a6a1f;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .header h1 {
+    font-family: 'Amiri', serif;
+    font-size: 34pt;
+    font-weight: 700;
+    background: linear-gradient(90deg, #0b6e3a, #c9a14a, #0b6e3a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    letter-spacing: 2px;
+  }
+  .header .sub {
+    font-size: 11pt;
+    color: #4a5568;
+    margin-top: 2mm;
+    font-style: italic;
+  }
+  .header .ornament {
+    width: 80mm; height: 6mm;
+    margin: 3mm auto 0;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 16'><path d='M0 8 H80 M120 8 H200' stroke='%23c9a14a' stroke-width='1'/><circle cx='100' cy='8' r='4' fill='%23c9a14a'/><circle cx='85' cy='8' r='1.5' fill='%23c9a14a'/><circle cx='115' cy='8' r='1.5' fill='%23c9a14a'/></svg>") center/contain no-repeat;
+  }
+
+  /* SVG layer for connecting curves */
+  .lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* Center node */
+  .center {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 78mm; height: 78mm;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #14854a, #0b6e3a 60%, #064a26);
+    color: #fff8d8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow:
+      0 0 0 3mm #fdfcf7,
+      0 0 0 3.4mm #c9a14a,
+      0 0 0 7mm #fdfcf7,
+      0 0 0 7.3mm #c9a14a55,
+      0 8mm 20mm rgba(0,0,0,0.2);
+    z-index: 4;
+    padding: 6mm;
+  }
+  .center .stars {
+    font-size: 12pt;
+    color: #ffd87a;
+    letter-spacing: 3px;
+    margin-bottom: 1mm;
+  }
+  .center h2 {
+    font-family: 'Amiri', serif;
+    font-size: 28pt;
+    line-height: 1;
+    font-weight: 700;
+  }
+  .center .nine {
+    font-size: 9pt;
+    margin-top: 2mm;
+    color: #ffe9a8;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .center p {
+    font-size: 8pt;
+    margin-top: 3mm;
+    line-height: 1.35;
+    color: #f3e9c8;
+    max-width: 60mm;
+  }
+
+  /* Branch nodes */
+  .node {
+    position: absolute;
+    width: 82mm;
+    background: #ffffff;
+    border-radius: 4mm;
+    padding: 4mm 5mm;
+    box-shadow: 0 2mm 6mm rgba(0,0,0,0.08), 0 0 0 1px #e8dcb6;
+    z-index: 3;
+    border-left: 2.2mm solid var(--c, #0b6e3a);
+  }
+  .node h3 {
+    font-size: 12pt;
+    font-weight: 700;
+    color: var(--c, #0b6e3a);
+    line-height: 1.1;
+    margin-bottom: 0.5mm;
+  }
+  .node .alias {
+    font-size: 8.5pt;
+    color: #6b7280;
+    font-style: italic;
+    margin-bottom: 2mm;
+  }
+  .node ul {
+    list-style: none;
+    font-size: 8.2pt;
+    line-height: 1.45;
+    color: #2d3748;
+  }
+  .node ul li {
+    position: relative;
+    padding-left: 4mm;
+    margin-bottom: 0.6mm;
+  }
+  .node ul li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 1.6mm;
+    width: 1.6mm; height: 1.6mm;
+    background: var(--c, #0b6e3a);
+    border-radius: 50%;
+    opacity: 0.85;
+  }
+  .node ul li b {
+    color: #1f2937;
+    font-weight: 600;
+  }
+
+  /* Each node's accent color */
+  .n1 { --c: #0b6e3a; }   /* Sunan Gresik */
+  .n2 { --c: #1565a8; }   /* Sunan Ampel */
+  .n3 { --c: #b8860b; }   /* Sunan Bonang */
+  .n4 { --c: #8e44ad; }   /* Sunan Drajat */
+  .n5 { --c: #c0392b; }   /* Sunan Kudus */
+  .n6 { --c: #117a65; }   /* Sunan Giri */
+  .n7 { --c: #d35400; }   /* Sunan Kalijaga */
+  .n8 { --c: #2c3e50; }   /* Sunan Muria */
+  .n9 { --c: #6d3a1f; }   /* Sunan Gunung Jati */
+
+  /* Positions (A3 landscape: 420mm x 297mm) */
+  .n1 { top: 30mm;  left: 12mm; }
+  .n2 { top: 30mm;  left: 50%;  transform: translateX(-50%); }
+  .n3 { top: 30mm;  right: 12mm; }
+  .n4 { top: 50%;   left: 12mm; transform: translateY(-50%); }
+  .n5 { top: 50%;   right: 12mm; transform: translateY(-50%); }
+  .n6 { bottom: 30mm; left: 12mm; }
+  .n7 { bottom: 30mm; left: 50%; transform: translateX(-50%); }
+  .n8 { bottom: 30mm; right: 12mm; }
+  /* Sunan Gunung Jati between center & right-mid? Use bottom-left-of-center */
+  .n9 { top: 50%; left: 50%; transform: translate(-50%, calc(-50% + 60mm)); display: none; }
+
+  /* Footer */
+  .footer {
+    position: absolute;
+    bottom: 12mm;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 8pt;
+    color: #8a6a1f;
+    letter-spacing: 2px;
+    z-index: 5;
+  }
+  .footer span { color: #c9a14a; }
+
+  /* Print button (hidden when printing) */
+  .toolbar {
+    position: fixed;
+    top: 10px; right: 10px;
+    z-index: 100;
+    display: flex; gap: 8px;
+  }
+  .toolbar button {
+    background: #0b6e3a;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .toolbar button:hover { background: #064a26; }
+
+  @media print {
+    body { background: white; }
+    .toolbar { display: none; }
+    .page { margin: 0; box-shadow: none; border: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button onclick="window.print()">Cetak / Simpan PDF (A3)</button>
+</div>
+
+<div class="page">
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <div class="header">
+    <div class="small">Mind Mapping</div>
+    <h1>WALI SONGO</h1>
+    <div class="sub">Sembilan Penyebar Agama Islam di Tanah Jawa (Abad ke-15 — 16 M)</div>
+    <div class="ornament"></div>
+  </div>
+
+  <!-- Connecting curves -->
+  <svg class="lines" viewBox="0 0 420 297" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#c9a14a"/><stop offset="1" stop-color="#0b6e3a"/></linearGradient>
+    </defs>
+    <g fill="none" stroke="url(#g1)" stroke-width="0.6" opacity="0.7" stroke-linecap="round">
+      <!-- center is at (210, 148.5) -->
+      <!-- to n1 top-left -->
+      <path d="M210,148.5 C150,120 100,80 53,55"/>
+      <!-- to n2 top-center -->
+      <path d="M210,148.5 C210,120 210,90 210,55"/>
+      <!-- to n3 top-right -->
+      <path d="M210,148.5 C270,120 320,80 367,55"/>
+      <!-- to n4 mid-left -->
+      <path d="M210,148.5 C150,148.5 100,148.5 53,148.5"/>
+      <!-- to n5 mid-right -->
+      <path d="M210,148.5 C270,148.5 320,148.5 367,148.5"/>
+      <!-- to n6 bottom-left -->
+      <path d="M210,148.5 C150,180 100,220 53,242"/>
+      <!-- to n7 bottom-center -->
+      <path d="M210,148.5 C210,180 210,210 210,242"/>
+      <!-- to n8 bottom-right -->
+      <path d="M210,148.5 C270,180 320,220 367,242"/>
+    </g>
+    <!-- decorative dots along lines -->
+    <g fill="#c9a14a">
+      <circle cx="130" cy="100" r="0.8"/>
+      <circle cx="290" cy="100" r="0.8"/>
+      <circle cx="130" cy="200" r="0.8"/>
+      <circle cx="290" cy="200" r="0.8"/>
+      <circle cx="100" cy="148.5" r="0.8"/>
+      <circle cx="320" cy="148.5" r="0.8"/>
+    </g>
+  </svg>
+
+  <!-- Center -->
+  <div class="center">
+    <div class="stars">&#9733; &#9733; &#9733;</div>
+    <h2>WALI<br/>SONGO</h2>
+    <div class="nine">9 Wali</div>
+    <p>Dewan ulama penyebar Islam di Pulau Jawa dengan pendekatan budaya, seni, dan pendidikan yang damai.</p>
+  </div>
+
+  <!-- 1. Sunan Gresik -->
+  <div class="node n1">
+    <h3>1. Sunan Gresik</h3>
+    <div class="alias">Maulana Malik Ibrahim &middot; w. 1419 M</div>
+    <ul>
+      <li><b>Wilayah:</b> Gresik, Jawa Timur</li>
+      <li><b>Asal:</b> Samarkand / Persia</li>
+      <li><b>Metode:</b> Pertanian, perdagangan, & pendidikan</li>
+      <li><b>Jasa:</b> Wali pertama, perintis dakwah Islam di Jawa</li>
+      <li><b>Peninggalan:</b> Pesantren pertama & makam di Gapura Wetan</li>
+    </ul>
+  </div>
+
+  <!-- 2. Sunan Ampel -->
+  <div class="node n2">
+    <h3>2. Sunan Ampel</h3>
+    <div class="alias">Raden Rahmat &middot; 1401 &ndash; 1481 M</div>
+    <ul>
+      <li><b>Wilayah:</b> Ampel Denta, Surabaya</li>
+      <li><b>Metode:</b> Pendidikan pesantren</li>
+      <li><b>Ajaran:</b> <i>Moh Limo</i> (tidak judi, mabuk, mencuri, zina, candu)</li>
+      <li><b>Jasa:</b> Mendirikan Masjid Agung Demak (bersama wali lain)</li>
+      <li><b>Murid:</b> Sunan Bonang, Sunan Drajat, Sunan Giri</li>
+    </ul>
+  </div>
+
+  <!-- 3. Sunan Bonang -->
+  <div class="node n3">
+    <h3>3. Sunan Bonang</h3>
+    <div class="alias">Raden Makdum Ibrahim &middot; 1465 &ndash; 1525 M</div>
+    <ul>
+      <li><b>Wilayah:</b> Tuban, Jawa Timur</li>
+      <li><b>Metode:</b> Seni musik & sastra</li>
+      <li><b>Karya:</b> Tembang <i>Tombo Ati</i>, gamelan <i>Bonang</i></li>
+      <li><b>Kitab:</b> Suluk Wujil</li>
+      <li><b>Jasa:</b> Guru spiritual Sunan Kalijaga</li>
+    </ul>
+  </div>
+
+  <!-- 4. Sunan Drajat -->
+  <div class="node n4">
+    <h3>4. Sunan Drajat</h3>
+    <div class="alias">Raden Qasim &middot; 1470 &ndash; 1522 M</div>
+    <ul>
+      <li><b>Wilayah:</b> Paciran, Lamongan</li>
+      <li><b>Metode:</b> Sosial &amp; kesejahteraan umat</li>
+      <li><b>Ajaran:</b> Catur Piwulang &mdash; menolong fakir miskin</li>
+      <li><b>Karya:</b> Tembang <i>Pangkur</i></li>
+      <li><b>Nilai:</b> Gotong royong &amp; kedermawanan</li>
+    </ul>
+  </div>
+
+  <!-- 5. Sunan Kudus -->
+  <div class="node n5">
+    <h3>5. Sunan Kudus</h3>
+    <div class="alias">Ja'far Shadiq &middot; w. 1550 M</div>
+    <ul>
+      <li><b>Wilayah:</b> Kudus, Jawa Tengah</li>
+      <li><b>Metode:</b> Toleransi lintas budaya (Hindu)</li>
+      <li><b>Strategi:</b> Larangan menyembelih sapi sebagai penghormatan</li>
+      <li><b>Karya:</b> Masjid Menara Kudus (akulturasi Hindu-Islam)</li>
+      <li><b>Gelar:</b> "Wali al-'Ilmi" &mdash; ahli ilmu fiqh</li>
+    </ul>
+  </div>
+
+  <!-- 6. Sunan Giri -->
+  <div class="node n6">
+    <h3>6. Sunan Giri</h3>
+    <div class="alias">Raden Paku / Ainul Yaqin &middot; 1442 &ndash; 1506 M</div>
+    <ul>
+      <li><b>Wilayah:</b> Giri, Gresik</li>
+      <li><b>Metode:</b> Pendidikan &amp; permainan anak</li>
+      <li><b>Karya:</b> Lagu <i>Jamuran, Cublak-cublak Suweng, Padang Bulan</i></li>
+      <li><b>Jasa:</b> Mendirikan Kerajaan Giri Kedaton</li>
+      <li><b>Pengaruh:</b> Dakwah hingga Madura, Lombok, Maluku</li>
+    </ul>
+  </div>
+
+  <!-- 7. Sunan Kalijaga -->
+  <div class="node n7">
+    <h3>7. Sunan Kalijaga</h3>
+    <div class="alias">Raden Said &middot; 1450 &ndash; 1513 M</div>
+    <ul>
+      <li><b>Wilayah:</b> Kadilangu, Demak</li>
+      <li><b>Metode:</b> Wayang, gamelan &amp; seni budaya</li>
+      <li><b>Karya:</b> <i>Lir-ilir, Gundul-gundul Pacul</i>, Wayang Kulit</li>
+      <li><b>Tradisi:</b> Sekaten &amp; Grebeg Maulud</li>
+      <li><b>Gelar:</b> Wali paling populer &amp; merakyat</li>
+    </ul>
+  </div>
+
+  <!-- 8. Sunan Muria -->
+  <div class="node n8">
+    <h3>8. Sunan Muria</h3>
+    <div class="alias">Raden Umar Said &middot; w. 1551 M</div>
+    <ul>
+      <li><b>Wilayah:</b> Gunung Muria, Kudus</li>
+      <li><b>Metode:</b> Dakwah pedesaan &amp; pegunungan</li>
+      <li><b>Sasaran:</b> Petani, nelayan, rakyat kecil</li>
+      <li><b>Karya:</b> Tembang <i>Sinom</i> dan <i>Kinanti</i></li>
+      <li><b>Jasa:</b> Putra Sunan Kalijaga, ahli topo ngrame</li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    &laquo; <span>&#10070;</span> &nbsp; SEMBILAN WALI PENYEBAR ISLAM DI NUSANTARA &nbsp; <span>&#10070;</span> &raquo;
+  </div>
+</div>
+
+<!-- Halaman 2: Sunan Gunung Jati + ringkasan tambahan agar 9 wali lengkap -->
+<div class="page">
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <div class="header">
+    <div class="small">Lanjutan &middot; Wali ke-9 &amp; Ringkasan</div>
+    <h1>SUNAN GUNUNG JATI</h1>
+    <div class="sub">Pelengkap Dewan Wali Songo &middot; Penguasa Cirebon &amp; Banten</div>
+    <div class="ornament"></div>
+  </div>
+
+  <svg class="lines" viewBox="0 0 420 297" preserveAspectRatio="none">
+    <g fill="none" stroke="#c9a14a" stroke-width="0.6" opacity="0.7" stroke-linecap="round">
+      <path d="M210,148.5 C150,90  90,70 53,55"/>
+      <path d="M210,148.5 C270,90  330,70 367,55"/>
+      <path d="M210,148.5 C150,210 90,225 53,242"/>
+      <path d="M210,148.5 C270,210 330,225 367,242"/>
+    </g>
+  </svg>
+
+  <div class="center" style="background: radial-gradient(circle at 30% 30%, #8a4a22, #6d3a1f 60%, #3e1f0e);">
+    <div class="stars">&#9733;</div>
+    <h2 style="font-size:22pt;">SUNAN<br/>GUNUNG<br/>JATI</h2>
+    <div class="nine">Wali ke-9</div>
+    <p>Syarif Hidayatullah &mdash; Sultan, ulama, &amp; pendiri Kesultanan Cirebon &amp; Banten.</p>
+  </div>
+
+  <!-- Identitas -->
+  <div class="node n9" style="display:block; top: 35mm; left: 12mm; --c:#6d3a1f;">
+    <h3>Identitas</h3>
+    <div class="alias">Syarif Hidayatullah &middot; 1448 &ndash; 1568 M</div>
+    <ul>
+      <li><b>Ayah:</b> Syarif Abdullah (Mesir)</li>
+      <li><b>Ibu:</b> Nyai Rara Santang (Pajajaran)</li>
+      <li><b>Wilayah:</b> Cirebon &amp; Banten, Jawa Barat</li>
+      <li><b>Gelar:</b> Sultan Cirebon I</li>
+    </ul>
+  </div>
+
+  <!-- Metode Dakwah -->
+  <div class="node n9" style="display:block; top: 35mm; right: 12mm; left:auto; --c:#6d3a1f;">
+    <h3>Metode Dakwah</h3>
+    <div class="alias">Pendekatan politik &amp; pemerintahan</div>
+    <ul>
+      <li>Mendirikan Kesultanan Cirebon (1479)</li>
+      <li>Mengembangkan Banten sebagai pusat Islam</li>
+      <li>Mengangkat Hasanuddin (putranya) sebagai Sultan Banten</li>
+      <li>Membangun masjid &amp; pesantren di Jawa Barat</li>
+    </ul>
+  </div>
+
+  <!-- Karya & Peninggalan -->
+  <div class="node n9" style="display:block; bottom: 35mm; left: 12mm; top:auto; --c:#6d3a1f;">
+    <h3>Karya &amp; Peninggalan</h3>
+    <div class="alias">Warisan budaya &amp; arsitektur</div>
+    <ul>
+      <li>Masjid Agung Sang Cipta Rasa, Cirebon</li>
+      <li>Keraton Kasepuhan &amp; Kanoman</li>
+      <li>Makam Gunung Sembung (Astana Gunung Jati)</li>
+      <li>Tradisi Panjang Jimat &amp; Grebeg Syawal</li>
+    </ul>
+  </div>
+
+  <!-- Ringkasan Pembagian Wilayah -->
+  <div class="node n9" style="display:block; bottom: 35mm; right: 12mm; top:auto; --c:#6d3a1f;">
+    <h3>Ringkasan Wilayah Wali Songo</h3>
+    <div class="alias">Peta dakwah 9 wali di Jawa</div>
+    <ul>
+      <li><b>Jawa Timur:</b> Gresik, Ampel, Bonang, Drajat, Giri</li>
+      <li><b>Jawa Tengah:</b> Kudus, Muria, Kalijaga (Demak)</li>
+      <li><b>Jawa Barat:</b> Gunung Jati (Cirebon &amp; Banten)</li>
+      <li><b>Periode:</b> Abad 15 &ndash; 16 Masehi</li>
+      <li><b>Pendekatan:</b> Damai, budaya, seni, &amp; pendidikan</li>
+    </ul>
+  </div>
+
+  <!-- Box bawah tengah: nilai-nilai -->
+  <div style="position:absolute; bottom: 32mm; left: 50%; transform: translateX(-50%); width: 130mm; background:#fff8ec; border:1px solid #c9a14a; border-radius: 3mm; padding: 4mm 6mm; box-shadow: 0 2mm 6mm rgba(0,0,0,0.08); z-index:3;">
+    <h3 style="font-size:11pt; color:#8a6a1f; text-align:center; margin-bottom:1mm;">Nilai &amp; Pelajaran Wali Songo</h3>
+    <ul style="list-style:none; font-size:8pt; line-height:1.45; color:#2d3748; columns:2; column-gap:6mm;">
+      <li>&#10070; Toleransi antar budaya &amp; agama</li>
+      <li>&#10070; Akulturasi Islam dengan tradisi lokal</li>
+      <li>&#10070; Dakwah lewat seni &amp; pendidikan</li>
+      <li>&#10070; Akhlak mulia &amp; kesederhanaan</li>
+      <li>&#10070; Persatuan umat &amp; gotong royong</li>
+      <li>&#10070; Cinta ilmu &amp; tafakur</li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    &laquo; <span>&#10070;</span> &nbsp; WALI SONGO &mdash; INSPIRASI DAKWAH NUSANTARA &nbsp; <span>&#10070;</span> &raquo;
+  </div>
+</div>
+
+</body>
+</html>
